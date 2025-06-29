@@ -1,3 +1,4 @@
+
 import java.util.Random;
 
 public abstract class Jogador {
@@ -8,14 +9,16 @@ public abstract class Jogador {
     protected boolean jogadorParalisado = false;
     protected int rodadasParalisado = 0;
     protected int casasAndadas;
+    protected int totalMoedas;
     protected Tabuleiro tabuleiro;
     protected final Random random = new Random();
-    protected int jogadasExtras; // Novo atributo adicionado
+    protected int jogadasExtras;
 
-    public Jogador(String nomeJogador, Tabuleiro tabuleiro, String tipoJogador) {
+    protected Jogador(String nomeJogador, Tabuleiro tabuleiro, String tipoJogador) {
         this.nomeJogador = nomeJogador;
         this.posicaoAtual = 0;
         this.casasAndadas = 0;
+        this.totalMoedas = 0;
         this.tabuleiro = tabuleiro;
         this.corJogador = "none";
         this.jogadasExtras = 0;
@@ -34,6 +37,7 @@ public abstract class Jogador {
     public String getTipoJogador() {return tipoJogador;}
     public String getCorJogador() {return corJogador;}
     public int getCasasAndadas(){return casasAndadas;}
+    public int getTotalMoedas(){return totalMoedas;}
     //Setters
     public void setCorJogador(String corJogador){this.corJogador = corJogador;}
     public void setTipoJogador(String tipoJogador) {this.tipoJogador = tipoJogador;}
@@ -44,5 +48,6 @@ public abstract class Jogador {
     }
     public int getJogadasExtras() {return jogadasExtras;}
     public void setJogadasExtras(int jogadasExtras) {this.jogadasExtras = jogadasExtras;}
-    public void incrementarCasasAndadas(int quantidade) { this.casasAndadas += quantidade; }
+    public void incrementarCasasAndadas(int quantidade) {this.casasAndadas += quantidade;}
+    public void incrementarMoedas(int moedas) { this.totalMoedas += moedas; }
 }

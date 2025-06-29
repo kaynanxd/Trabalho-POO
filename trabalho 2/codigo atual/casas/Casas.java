@@ -5,7 +5,7 @@ public abstract class Casas {
     private String nomeCasa;
     private AcaoCasa acao;
 
-    public Casas (int numero, String nomeCasa, AcaoCasa acao) {
+    protected Casas (int numero, String nomeCasa, AcaoCasa acao) {
         this.numero = numero;
         this.nomeCasa = nomeCasa;
         this.acao = acao;

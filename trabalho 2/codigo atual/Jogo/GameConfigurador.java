@@ -1,35 +1,37 @@
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GameConfigurador {
     private final InputGerenciador inputGerenciador;
     private final Tabuleiro tabuleiro;
 
-    public GameConfigurador(InputGerenciador inputHandler, Tabuleiro tabuleiro) {
-        this.inputGerenciador = inputHandler;
+    public GameConfigurador(InputGerenciador inputGerenciador, Tabuleiro tabuleiro) {
+        this.inputGerenciador = inputGerenciador;
         this.tabuleiro = tabuleiro;
     }
 
     public int configureTabuleiro() {
         System.out.println("--- Configuração do Jogo ---");
 
-        int numCasas = inputGerenciador.LerInteiro(
+        int numCasas = inputGerenciador.lerInteiro(
                 "Digite o número de casas do tabuleiro (mínimo 20): ",
                 20, Integer.MAX_VALUE,
                 "O número de casas deve ser maior ou igual a 20."
         );
 
-        // Inicializa todas as casas como Simples
+        // Inicializa todas as casas como Simples e depois vai mudando os tipos
         for (int i = 0; i < numCasas; i++) {
             Casas casa = CasaFactory.criarCasa(i, "simples");
             tabuleiro.adicionarCasa(casa);
         }
         System.out.println("\n--- Configuração das Casas Especiais ---");
-        System.out.println("Para cada tipo de casa especial, digite os números das casas separados por vírgula (ex: 3,5,8).");
-        System.out.println("Se não quiser nenhuma casa de um tipo, apenas pressione Enter.");
-        System.out.println("As casas são numeradas de 0 a " + (numCasas - 1) + ".");
+        System.out.println("Para cada tipo de casa especial, digite os números das casas separados por vírgula ex: 3,5,8");
+        System.out.println("Se não quiser nenhuma casa de um tipo, apenas aperte Enter.");
+        System.out.println("\nAs casas são numeradas de 0 a " + (numCasas - 1) + ".\n");
 
-        String[] tiposCasasEspeciais = {"sorte", "azar","jogadenovo", "prisao", "reversa", "surpresa"};
+        String[] tiposCasasEspeciais = {"sorte", "azar","jogardenovo", "prisao", "reversa", "surpresa"};
 
         for (String tipo : tiposCasasEspeciais) {
             String prompt = "Casas do tipo '" + tipo + "': ";
@@ -47,44 +49,61 @@ public class GameConfigurador {
                         Casas novaCasa = CasaFactory.criarCasa(numeroCasa, tipo);
                         tabuleiro.getCasas().set(numeroCasa, novaCasa);
                     } else {
-                        System.out.println("Atenção: Casa " + numeroCasa + " fora do limite do tabuleiro. Ignorada para o tipo '" + tipo + "'.");
+                        System.out.println("Atenção: Casa " + numeroCasa + " fora do limite do tabuleiro.");
                     }
                 }
-            } catch (NumberFormatException e) {
-                System.out.println("Entrada inválida para o tipo '" + tipo + "'. Por favor, use números separados por vírgula.");
+            } catch (NumberFormatException erro) {
+                System.out.println("Entrada invalida, use números separados por vírgula.");
             }
         }
-        System.out.println("Configuração do tabuleiro das casas concluída.");
+        System.out.println("\nConfiguração do tabuleiro das casas concluída.\n");
         return numCasas;
     }
 
-    public boolean configurePlayers() {
-        int numJogadores = inputGerenciador.LerInteiro(
-                "Digite o número de jogadores (até 6): ",
-                1, 6,
-                "O número de jogadores deve estar entre 1 e 6."
-        );
+    public boolean configureJogadores() {
+        boolean tipoJogadorValido = false;
 
-        List<String> coresValidas = Arrays.asList("vermelho", "verde", "amarelo", "azul", "roxo", "ciano", "branco");
-        List<String> tiposJogadoresValidos = Arrays.asList("normal", "sortudo", "azarado");
+        while (!tipoJogadorValido) {
+            tabuleiro.getJogadores().clear();
 
-        for (int i = 0; i < numJogadores; i++) {
-            System.out.println("\nJogador " + (i + 1));
+            int numJogadores = inputGerenciador.lerInteiro(
+                    "Digite o número de jogadores (até 6): ",
+                    1, 6,
+                    "O número de jogadores deve estar entre 1 e 6."
+            );
 
-            String nome = inputGerenciador.lerNomeVazio("Nome: ",
-                    "O nome do jogador não pode ser vazio. Por favor, digite um nome.");
+            List<String> coresValidas = Arrays.asList("vermelho", "verde", "amarelo", "azul", "roxo", "ciano", "azul");
+            List<String> tiposJogadoresValidos = Arrays.asList("normal", "sortudo", "azarado");
 
-            String cor = inputGerenciador.lerListaInteiros("Cor", coresValidas,
-                    "Cor inválida. Por favor, escolha uma das cores listadas.");
+            Map<String, Integer> contagemTipos = new HashMap<>();
+            Map<String, Boolean> tiposDistintos = new HashMap<>();
 
-            String tipo = inputGerenciador.lerListaInteiros("Tipo de Jogador", tiposJogadoresValidos,
-                    "Tipo inválido. Por favor, digite 'normal', 'sortudo' ou 'azarado'.");
+            for (int i = 0; i < numJogadores; i++) {
+                System.out.println("\nJogador " + (i + 1));
 
-            Jogador jogador = JogadorFactory.criarJogador(tipo, nome, this.tabuleiro);
-            jogador.setCorJogador(cor);
-            tabuleiro.adicionarJogador(jogador);
+                String nome = inputGerenciador.lerNomeVazio("Nome: ", "O nome do jogador não pode ser vazio. Digite um nome.");
+
+                String cor = inputGerenciador.lerListaInteiros("Cor", coresValidas, "Cor inválida. Escolha uma das cores listadas.");
+
+                String tipo = inputGerenciador.lerListaInteiros("Tipo de Jogador", tiposJogadoresValidos, "Tipo inválido. Por favor, digite 'normal', 'sortudo' ou 'azarado'.");
+
+                Jogador jogador = JogadorFactory.criarJogador(tipo, nome, this.tabuleiro);
+                jogador.setCorJogador(cor);
+                tabuleiro.adicionarJogador(jogador);
+
+                contagemTipos.put(tipo, contagemTipos.getOrDefault(tipo, 0) + 1);
+                tiposDistintos.put(tipo, true);
+            }
+            if (tiposDistintos.size() < 2) { // Usa o tamanho do mapa de tipos distintos
+                System.out.println("\n É necessário ter pelo menos dois tipos diferentes de jogadores para iniciar o jogo.");
+                System.out.println("Por favor, configure os jogadores novamente.");
+                tipoJogadorValido = false;
+            } else {
+                System.out.println("\nConfiguração de jogadores concluida com sucesso!\n");
+                tipoJogadorValido = true;
+            }
         }
-
-        return inputGerenciador.LerSimOuNao("Deseja ativar o modo debug?");
+        return inputGerenciador.lerSimOuNao("Deseja ativar o modo debug?");
     }
+
 }

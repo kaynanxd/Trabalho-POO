@@ -10,7 +10,7 @@ public class InputGerenciador {
     }
 
 
-    public int LerInteiro(String prompt, int min, int max, String errorMessage) {
+    public int lerInteiro(String prompt, int min, int max, String errorMessage) {
         int value = 0;
         while (true) {
             System.out.print(prompt);
@@ -21,7 +21,7 @@ public class InputGerenciador {
                 } else {
                     System.out.println(errorMessage);
                 }
-            } catch (InputMismatchException e) {
+            } catch (InputMismatchException _) {
                 System.out.println("Entrada inválida. Por favor, digite um número inteiro.");
                 scanner.next();
             }
@@ -67,7 +67,7 @@ public class InputGerenciador {
         scanner.nextLine();
     }
 
-    public boolean LerSimOuNao(String prompt) {
+    public boolean lerSimOuNao(String prompt) {
         String input = "";
         while (true) {
             System.out.print(prompt + " (s/n): ");

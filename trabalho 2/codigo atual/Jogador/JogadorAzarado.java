@@ -1,11 +1,13 @@
+
 public class JogadorAzarado extends Jogador {
+
     public JogadorAzarado(String nome, Tabuleiro tabuleiro) {
         super(nome, tabuleiro, "Azarado");
-
     }
-
     public int[] lancarDados() {
-        int dado1, dado2, soma;
+        int dado1;
+        int dado2;
+        int  soma;
         do {
             dado1 = lancarDado();
             dado2 = lancarDado();

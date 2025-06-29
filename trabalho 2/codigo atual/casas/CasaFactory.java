@@ -1,4 +1,7 @@
 public class CasaFactory {
+    private CasaFactory() {
+        // para garantir que ninguém tente instanciar segundo sonarqube
+    }
     public static Casas criarCasa(int numero, String tipo) {
         switch (tipo.toLowerCase()) {
             case "sorte":

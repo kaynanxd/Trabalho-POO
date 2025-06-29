@@ -1,4 +1,6 @@
+
 public class JogadorNormal extends Jogador {
+
     public JogadorNormal(String nome, Tabuleiro tabuleiro) {
         super(nome, tabuleiro, "Normal");
     }

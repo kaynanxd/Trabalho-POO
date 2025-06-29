@@ -5,7 +5,7 @@ public class AcaoSorte implements AcaoCasa {
         if (!jogador.tipoJogador.equals("Azarado")) {
             int posicaoSorte = jogador.getPosicaoAtual() + 3;
             jogador.setPosicaoAtual(posicaoSorte);
-            System.out.println(jogador.getNomeJogador() + " avançou 3 casas devido à sorte. Agora ele está na casa "
+            System.out.println(jogador.getNomeJogador() + " avançou 3 casas devido a sorte. Agora ele está na casa "
                     + jogador.getPosicaoAtual());
         }
     }

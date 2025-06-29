@@ -1,19 +1,20 @@
 import java.util.List;
 
 public class AcaoReversa implements AcaoCasa {
-    private Jogador menorPosJogador;
-    private int menorPosicao;
 
     public void executarAcao(Jogador jogadorAtual, List<Jogador> jogadores) {
+        Jogador menorPosJogador;
+        int menorPosicao;
         menorPosJogador = null;
         menorPosicao = Integer.MAX_VALUE;
 
-        for (Jogador j : jogadores) {
-            if (j != jogadorAtual && j.getPosicaoAtual() < jogadorAtual.getPosicaoAtual()) {
-                if (j.getPosicaoAtual() < menorPosicao) {
-                    menorPosicao = j.getPosicaoAtual();
-                    menorPosJogador = j;
-                }
+        for (Jogador outroJogador : jogadores) {
+            if (outroJogador != jogadorAtual &&
+                    outroJogador.getPosicaoAtual() < jogadorAtual.getPosicaoAtual() &&
+                    outroJogador.getPosicaoAtual() < menorPosicao) {
+
+                menorPosicao = outroJogador.getPosicaoAtual();
+                menorPosJogador = outroJogador;
             }
         }
 
