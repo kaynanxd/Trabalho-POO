@@ -22,14 +22,14 @@ public class GameConfigurador {
         );
 
         // Inicializa todas as casas como Simples e depois vai mudando os tipos
-        for (int i = 0; i < numCasas; i++) {
+        for (int i = 0; i < numCasas+1; i++) {
             Casas casa = CasaFactory.criarCasa(i, "simples");
             tabuleiro.adicionarCasa(casa);
         }
         System.out.println("\n--- Configuração das Casas Especiais ---");
         System.out.println("Para cada tipo de casa especial, digite os números das casas separados por vírgula ex: 3,5,8");
         System.out.println("Se não quiser nenhuma casa de um tipo, apenas aperte Enter.");
-        System.out.println("\nAs casas são numeradas de 0 a " + (numCasas - 1) + ".\n");
+        System.out.println("\nAs casas são numeradas de 0 a " + (numCasas ) + ".\n");
 
         String[] tiposCasasEspeciais = {"sorte", "azar","jogardenovo", "prisao", "reversa", "surpresa"};
 
