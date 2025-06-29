@@ -18,7 +18,7 @@ public class Jogo {
         this.numeroRodada = 0;
     }
 
-    public void gameSetup() {
+    public void configurarCasasEJogadores() {
         gameConfigurador.configureTabuleiro();
         this.modoDebug = gameConfigurador.configureJogadores();
     }
