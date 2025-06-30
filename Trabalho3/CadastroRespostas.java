@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
-import java.util.List;
 
 public class CadastroRespostas extends Base {
     private String nomeDisciplina;
@@ -11,6 +10,10 @@ public class CadastroRespostas extends Base {
     public CadastroRespostas() {
         super();
         this.gerenciadorResultados = new GerenciadorResultados();
+    }
+
+    public String getNomeDisciplinaAtual() {
+        return nomeDisciplina;
     }
 
     public void criarArquivoDisciplina(Scanner sc) {
@@ -79,7 +82,6 @@ public class CadastroRespostas extends Base {
         String gabaritoOficialString = new String(respostasGabarito);
         salvarGabarito(nomeArquivo, gabaritoOficialString);
     }
-
     public void gerarResultado(Scanner sc) {
         System.out.print("\n=== Gerar Resultado da Disciplina ===\n");
         System.out.print("Digite o nome da disciplina para gerar resultados: ");
@@ -117,6 +119,14 @@ public class CadastroRespostas extends Base {
         ordenacaoPorNota.ordenarEsalvar(nomeDisciplina, listaAlunos);
 
         System.out.println("\nResultados gerados com sucesso para a disciplina: " + nomeDisciplina);
+
+        String nomeArquivoAlfabetica = "RespostasAlunos/Ordem Alfábetica/" + nomeDisciplina + "_OrdemAlfabetica.txt";
+        System.out.println("\n=== Resultados da Disciplina " + nomeDisciplina + " (Ordem Alfabética) ===");
+        visualizarResultados(nomeArquivoAlfabetica);
+
+        String nomeArquivoPorNota = "RespostasAlunos/Ordem Nota/" + nomeDisciplina + "_OrdemPorNota.txt";
+        System.out.println("\n=== Resultados da Disciplina " + nomeDisciplina + " (Ordem por Nota) ===");
+        visualizarResultados(nomeArquivoPorNota);
     }
 
     private String lerGabarito(String caminho) {
@@ -134,5 +144,16 @@ public class CadastroRespostas extends Base {
             System.err.println("Erro ao ler gabarito do caminho " + caminho + ": " + e.getMessage());
         }
         return null;
+    }
+    public void visualizarResultados(String nomeArquivo) {
+        try (BufferedReader br = new BufferedReader(new FileReader(nomeArquivo))) {
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                System.out.println(linha);
+            }
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o arquivo de resultados " + nomeArquivo + ": " + e.getMessage());
+            System.out.println("Certifique-se de que o arquivo de resultados foi gerado.");
+        }
     }
 }
